@@ -1,7 +1,7 @@
 # Setup
 1. Установить Docker
 2. Запустить команду `docker compose up --build -d`. При первой инициализации PostgreSQL запустится скрипт из ./init_db/db-fixtures.sql с созданием структуры БД и созданием фикстур. Также будет собран новый образ RabbitMQ из ./rabbitmq/Dockerfile, который установит в базовый образ плагин `rabbitmq_delayed_message_exchange` для системы уведомлений (./rabbitmq/init-rabbitmq.sh). Проверить корректность установки плагина в контейнере можно через команду `rabbitmq-plugins list`.
-3. Запуск приложения `docker compose -f=docker-compose.app.yml up --build`. Соберется Express.js приложение из ./Dockerfile. Запуск в дев режиме `npm i && npm run dev`
+3. Запуск приложения `docker compose -f=docker-compose.app.yml up --build -d`. Соберется Express.js приложение из ./Dockerfile. Запуск в дев режиме `npm i && npm run dev`
 4. Выполнить curl команды ниже. Если отдается Forbidden, необходимо изменить авторизационный токен в заголовках, который отдается в /api/v1/users/verifyCode
 
 # Logging
@@ -73,6 +73,12 @@ Remove RabbitMQ container with volume
 docker compose rm rabbitmq
 
 docker volume rm doctor-appointment_rabbitmq_data
+```
+
+Stop containers
+```shell
+docker compose -f docker-compose.app.yml stop
+docker compose stop
 ```
 
 
