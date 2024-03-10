@@ -21,7 +21,6 @@ class Notifier {
 
     public async connect() {
         try {
-            console.log(`amqp://${env.rabbitmqDefaultUser}:${env.rabbitmqDefaultPass}@${env.rabbitmqHost}:5672`);
             const connection = await amqp.connect(
                 `amqp://${env.rabbitmqDefaultUser}:${env.rabbitmqDefaultPass}@${env.rabbitmqHost}:5672`
             );
@@ -44,7 +43,7 @@ class Notifier {
     }
 
     private static getMessages(userPhone: string, userName: string, doctorFirstName: string, doctorLastName: string, doctorSpecialization: string, visitTime: Date): {tomorrowMessage: RabbitMQNotifierMessage, twoHoursMessage: RabbitMQNotifierMessage} {
-        const localeDateOptions = { hour: '2-digit', minute: '2-digit', hour12: false } as const;
+        const localeDateOptions = { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: "Europe/Moscow" } as const;
         const tomorrowMessage = `Здравствуйте, ${userName}! Напоминаем что вы записаны к специалисту ${doctorFirstName?.charAt(0) ?? ''} ${doctorLastName} (${doctorSpecialization}) завтра в ${visitTime.toLocaleTimeString('en-US', localeDateOptions)}!`
         const twoHoursMessage = `Здравствуйте, ${userName}! Запись к специалисту ${doctorFirstName?.charAt(0) ?? ''} ${doctorLastName} (${doctorSpecialization}) через два часа!`
 

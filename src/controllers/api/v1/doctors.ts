@@ -74,6 +74,7 @@ export class DoctorsController {
                 const allSlots = DoctorsController.generateAllSlots(dateFrom, dateTo);
                 const doctorOccupiedSlots = await doctor.visitTimes;
 
+                doctor.specializationData = await doctor.specialization
                 doctor.freeVisitTimes = DoctorsController.filterOutOccupiedSlots(allSlots, doctorOccupiedSlots);
             }
             return sanitize(doctors);
@@ -98,7 +99,7 @@ export class DoctorsController {
         let timeStart: Date;
         let timeEnd: Date;
         try {
-            timeStart = new Date(timeStartString as string);
+            timeStart = new Date(Date.parse(timeStartString as string));
             timeEnd = new Date(timeStart.getTime() + 30 * 60 * 1000);
         } catch (error) {
             Logger.error('Error parsing date: ', error);
